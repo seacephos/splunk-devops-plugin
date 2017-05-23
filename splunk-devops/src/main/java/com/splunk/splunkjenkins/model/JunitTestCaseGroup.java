@@ -2,7 +2,6 @@ package com.splunk.splunkjenkins.model;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Util;
-import hudson.tasks.junit.CaseResult;
 import hudson.tasks.test.TestResult;
 
 import java.util.ArrayList;
@@ -65,7 +64,6 @@ public class JunitTestCaseGroup {
                 ", skips: " + skips +
                 ", errors: " + errors +
                 ", total: " + total +
-                ", duration: " + Util.getPastTimeString((long)duration);
-
+                ", duration: " + Util.getTimeSpanString(1000L * (long) duration);
     }
 }
