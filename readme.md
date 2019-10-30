@@ -85,3 +85,4 @@ System properties are defined by passing -Dproperty=value to the java command li
 |splunkins.debugLogBatchSize|128|batch size for sending verbose level (FINE,FINER,FINEST) log record|
 |splunkins.ignoreConfigChangePattern|(queue\|nodeMonitors\|UpdateCenter\|global-build-stats\|fingerprint\|build)(.*?xml)|regular expression for ignoring config file changes|
 |splunkins.verifySSL|false|enable ssl certificate verification for splunk endpoint|
+|splunkins.junitStdioLimit|2097152|trim long junit standard output/error, set it to 0 for unlimited|

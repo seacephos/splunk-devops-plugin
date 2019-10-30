@@ -2,9 +2,6 @@ package com.splunk.splunkjenkins;
 
 import com.google.common.collect.ImmutableList;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Constants {
     public static final String TESTCASE = "testcase";
     public static final String TESTSUITE = "testsuite";
@@ -48,4 +45,7 @@ public class Constants {
     // if it is increased, please also increase the TRUNCATE config in splunk props.conf
     // ref: http://docs.splunk.com/Documentation/Splunk/7.2.1/Admin/Propsconf
     public static final int CONSOLE_TEXT_SINGLE_LINE_MAX_LENGTH = Integer.getInteger("splunkins.lineTruncate", 100000);
+    //junit stdio limit, in case keepLongStdio is turned on in junit publisher and large chunk data attached
+    //the value should large than junit's trimmed size 100KB, here use 2MiB as default
+    public static int MAX_JUNIT_STDIO_SIZE = Integer.parseInt(System.getProperty("splunkins.junitStdioLimit", "2097152"));
 }

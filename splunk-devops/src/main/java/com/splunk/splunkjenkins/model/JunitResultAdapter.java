@@ -27,6 +27,10 @@ public class JunitResultAdapter extends AbstractTestResultAdapter<TestResultActi
      * @return unified test case result
      */
     private TestCaseResult convert(CaseResult methodResult, String suiteName) {
+        String buildUrl = "";
+        if (methodResult.getRun() != null) {
+            buildUrl = methodResult.getRun().getUrl();
+        }
         TestCaseResult testCaseResult = new TestCaseResult();
         testCaseResult.setTestName(methodResult.getName());
         testCaseResult.setUniqueName(methodResult.getFullName());
@@ -36,8 +40,8 @@ public class JunitResultAdapter extends AbstractTestResultAdapter<TestResultActi
         testCaseResult.setErrorStackTrace(methodResult.getErrorStackTrace());
         testCaseResult.setSkippedMessage(methodResult.getSkippedMessage());
         testCaseResult.setFailedSince(methodResult.getFailedSince());
-        testCaseResult.setStderr(methodResult.getStderr());
-        testCaseResult.setStdout(methodResult.getStdout());
+        testCaseResult.setStderr(trimToLimit(methodResult.getStderr(), methodResult.getFullName(), buildUrl));
+        testCaseResult.setStdout(trimToLimit(methodResult.getStdout(), methodResult.getFullName(), buildUrl));
         testCaseResult.setGroupName(suiteName);
         TestStatus status = TestStatus.SKIPPED;
         if (!methodResult.isSkipped()) {

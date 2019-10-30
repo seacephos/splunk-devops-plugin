@@ -1,5 +1,7 @@
 package com.splunk.splunkjenkins.utils;
 
+import com.splunk.splunkjenkins.Constants;
+import com.splunk.splunkjenkins.model.AbstractTestResultAdapter;
 import com.splunk.splunkjenkins.model.JunitResultAdapter;
 import com.splunk.splunkjenkins.model.JunitTestCaseGroup;
 import hudson.model.Run;
@@ -12,6 +14,7 @@ import java.io.FileWriter;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestCaseResultUtilsTest {
     public void splitJunitTestCase(int total, int pageSize) throws Exception {
@@ -52,5 +55,18 @@ public class TestCaseResultUtilsTest {
     @Test
     public void testSplitDivide() throws Exception {
         splitJunitTestCase(5, 5);
+    }
+
+    @Test
+    public void testTrimStdout() {
+        int messageSize = (1 << 21) + 1;
+        String originalMessage = new String(new byte[messageSize]);
+        String truncatedMessage = AbstractTestResultAdapter.trimToLimit(originalMessage, "case1", "job/1");
+        assertEquals(Constants.MAX_JUNIT_STDIO_SIZE, truncatedMessage.length());
+        //short one
+        messageSize = (1 << 21) - 1;
+        originalMessage = new String(new byte[messageSize]);
+        truncatedMessage = AbstractTestResultAdapter.trimToLimit(originalMessage, "case1", "job/1");
+        assertTrue(truncatedMessage.length() == messageSize);
     }
 }

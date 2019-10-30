@@ -19,6 +19,10 @@ import static com.splunk.splunkjenkins.Constants.ERROR_MESSAGE_NA;
 public class TestNGResultAdapter extends AbstractTestResultAdapter<TestNGTestResultBuildAction> {
     @Override
     public List<TestCaseResult> getTestResult(TestNGTestResultBuildAction resultAction) {
+        String buildUrl = "";
+        if (resultAction.run != null) {
+            buildUrl = resultAction.run.getUrl();
+        }
         List<TestNGTestResult> testResults = resultAction.getResult().getTestList();
         List<TestCaseResult> caseResults = new ArrayList<>();
         for (TestNGTestResult testResult : testResults) {
@@ -65,6 +69,7 @@ public class TestNGResultAdapter extends AbstractTestResultAdapter<TestNGTestRes
                     }
                     testCaseResult.setSkippedMessage(methodResult.getDescription());
                     testCaseResult.setStdout(methodResult.getReporterOutput());
+                    testCaseResult.setStdout(trimToLimit(methodResult.getReporterOutput(), methodResult.getSafeName(), buildUrl));
                     caseResults.add(testCaseResult);
                 }
             }
