@@ -110,7 +110,7 @@ public class LogConsumer extends Thread {
             } catch (InterruptedException e) {
                 errorCount++;
                 //thread interrupted, just ignore
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 errorCount++;
                 LOG.log(Level.SEVERE, "get exception in worker thread", ex);
             }
