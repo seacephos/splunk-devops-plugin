@@ -1,2 +1,2 @@
 // https://github.com/jenkins-infra/pipeline-library
-buildPlugin(/*...*/, configurations: buildPlugin.recommendedConfigurations())
+buildPlugin(configurations: buildPlugin.recommendedConfigurations())
