@@ -7,7 +7,7 @@ import com.splunk.splunkjenkins.model.JunitTestCaseGroup
 import com.splunk.splunkjenkins.utils.LogEventHelper
 import com.splunk.splunkjenkins.utils.SplunkLogService
 import com.splunk.splunkjenkins.utils.TestCaseResultUtils
-import hudson.EnvVars
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import hudson.FilePath
 import hudson.model.AbstractBuild
 import hudson.model.Action
@@ -113,6 +113,7 @@ public class RunDelegate {
     }
 
     @Whitelisted
+    @SuppressFBWarnings("SE_NO_SERIALVERSIONID")
     def sendTestReport(int pageSize) {
         def results = getJunitReport(pageSize, null)
         def buildEvent = getBuildEvent()
@@ -124,6 +125,7 @@ public class RunDelegate {
     }
 
     @Whitelisted
+    @SuppressFBWarnings("SE_NO_SERIALVERSIONID")
     def sendCoverageReport(int pageSize) {
         def coverageList = CoverageMetricsAdapter.getReport(build, pageSize);
         if (coverageList.isEmpty()) {

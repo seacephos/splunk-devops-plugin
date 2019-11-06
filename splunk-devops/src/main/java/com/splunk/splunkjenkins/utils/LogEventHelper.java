@@ -718,6 +718,7 @@ public class LogEventHelper {
      * @param script user input script to validate
      * @return error message if there is any
      */
+    @SuppressFBWarnings("DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED")
     public static FormValidation validateGroovyScript(String script) {
         FormValidation validationResult = GroovySandbox.checkScriptForCompilationErrors(script,
                 new GroovyClassLoader(Jenkins.getInstance().getPluginManager().uberClassLoader));

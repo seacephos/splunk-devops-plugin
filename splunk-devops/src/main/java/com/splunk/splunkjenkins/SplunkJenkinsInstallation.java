@@ -555,7 +555,11 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
             if (metaDataProperties != null && metaDataProperties.containsKey("host")) {
                 return metaDataProperties.getProperty("host");
             } else {
-                String url = JenkinsLocationConfiguration.get().getUrl();
+                String url = null;
+                JenkinsLocationConfiguration jenkinsLocation = JenkinsLocationConfiguration.get();
+                if (jenkinsLocation != null) {
+                    url = jenkinsLocation.getUrl();
+                }
                 if (url != null && !url.startsWith("http://localhost")) {
                     try {
                         return (new URL(url)).getHost();

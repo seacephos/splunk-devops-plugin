@@ -2,6 +2,7 @@ package com.splunk.splunkjenkins.utils;
 
 import com.splunk.splunkjenkins.SplunkJenkinsInstallation;
 import com.splunk.splunkjenkins.model.EventType;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
 import hudson.util.ByteArrayOutputStream2;
@@ -65,7 +66,8 @@ public class LogFileCallable implements FilePath.FileCallable<Integer> {
         }
         return eventCount;
     }
-
+    
+    @SuppressFBWarnings("DLS_DEAD_LOCAL_STORE")
     public Integer send(String fileName, InputStream input) throws IOException, InterruptedException {
         long throttleSize = SplunkJenkinsInstallation.get().getMaxEventsBatchSize();
         if (!SplunkJenkinsInstallation.get().isRawEventEnabled()) {
@@ -149,7 +151,7 @@ public class LogFileCallable implements FilePath.FileCallable<Integer> {
      */
     @Override
     public Integer invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-        if (!enabledSplunkConfig && Jenkins.getInstance() == null) {
+        if (!enabledSplunkConfig && Jenkins.getInstanceOrNull() == null) {
             //running on slave node, need init config
             initSplunkins();
         }
