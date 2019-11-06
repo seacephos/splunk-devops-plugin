@@ -4,10 +4,8 @@ Splunk for Jenkins
 To Install Develop Version
 ----
  - clone the repo
- - `$ mvn package`
- -  That will generate `splunk-devops/target/splunk-devops.hpi` which you can install into Jenkins by the web interface or just put it in the `JENKINS_HOME/plugins` folder.
- - `$ mvn clean verify -Dhost=localhost -Dusername=admin -Dpassword=changeme`
-   to run tests against local splunk instance
+ - `mvn package`
+ -  mvn will generate `splunk-devops/target/splunk-devops.hpi` which you can install into Jenkins by the web interface or just put it in the `JENKINS_HOME/plugins` folder
 
 
 To Setup
@@ -23,8 +21,6 @@ To Setup
    ![Screenshot](doc/images/splunk_for_jenkins_config_basic.png)
 
 ### Customize Job Data Sent to Splunk
-
-#### Customize post job processing
 
 - In the advance configure section, you can customize the post data using groovy DSL
 - ``send(Object message)`` will send the information to splunk
@@ -51,38 +47,15 @@ splunkins.archive("**/*.log", null, false, "10MB")
 
 ```
 
-#### Customize log files at job level
-- Add a "post-build action" called "Send data to Splunk"
-- Enter an ant-style pattern matching string for your junit xml collection
-
-  ![Screenshot](doc/images/splunk_for_jenkins_post_job.png)
- 
-Dashboard
+Contributing to the plugin
 ----
+-   clone the repo and update code
+-   start splunk, you can get a free trail version from
+    [Splunk](https://splunk.com/)
+-   `mvn clean verify -Dsplunk-host=localhost -Dsplunk-username=admin -Dsplunk-passwd=changeme`
+    to run tests using local splunk instance.
+-   send pull requests
 
-you can get the "Splunk App for Jenkins" App from [splunk base](https://splunkbase.splunk.com/app/3332/)
-
-
-System Requirement
------
-You need enable "HTTP Event Collector" In Splunk to use the plugin,
-please checkout [HTTP Event Collector](http://dev.splunk.com/view/event-collector/SP-CAAAE7G)
-
-
-Features Controlled with System Properties
+Documentation
 ----
-
-System properties are defined by passing -Dproperty=value to the java command line to start Jenkins. Make sure to pass all of these arguments before the -jar argument, otherwise they will be ignored. Example:
-
-`java -Dsplunkins.buffer=4096 -jar jenkins.war`
-
-
-|Property|Default Value|Note|
-|-------------|-------------|-------------|
-|com.splunk.splunkjenkins.JdkSplunkLogHandler.level|INFO|log message levels lower than this will not be send to splunk|
-|splunkins.buffer|4096|console log buffer size|
-|splunkins.consoleLogFilterPattern|(empty)| regular expression for 'interesting' build. if it is set, only send console log to splunk for the job whose build url matches the pattern|
-|splunkins.debugLogBatchSize|128|batch size for sending verbose level (FINE,FINER,FINEST) log record|
-|splunkins.ignoreConfigChangePattern|(queue\|nodeMonitors\|UpdateCenter\|global-build-stats\|fingerprint\|build)(.*?xml)|regular expression for ignoring config file changes|
-|splunkins.verifySSL|false|enable ssl certificate verification for splunk endpoint|
-|splunkins.junitStdioLimit|2097152|trim long junit standard output/error, set it to 0 for unlimited|
+See the [documentation](doc/USAGE.md)

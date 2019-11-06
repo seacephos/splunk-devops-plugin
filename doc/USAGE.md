@@ -68,8 +68,8 @@ you can customize the index, sourcetype in the "Custom Metadata" section.
 -   For Splunk version 6.5 or later, it is recommended to use the
     plugin's default config
 -   For Splunk 6.3.x or 6.4.x, please adjust the default sourcetype to
-    json:jenkins:old (please remove it if Splunk get upgraded to latest
-    version otherwise data will be extracted twice)
+    `json:jenkins:old` (please remove it if Splunk get upgraded to latest
+    version, otherwise data will be extracted twice)
 
 ![json:jenkins:old](images/json_jenkins_sourcetype_old.png)
 
@@ -130,9 +130,9 @@ post-build action 'Send data to Splunk'
 -   Enter an ant-style pattern matching string for your junit xml
     collection
 
-![](doc/images/splunk_for_jenkins_post_job.png)
+![post-job-config](images/splunk_for_jenkins_post_job.png)
 
-#### 5. System properties (optional)
+#### 5. Features Controlled with System Properties (optional)
 
 System properties are defined by passing -Dproperty=value to the java
 command line to start Jenkins. Make sure to pass all of these arguments
@@ -151,7 +151,7 @@ Example: `java -Dsplunkins.buffer=4096 -jar jenkins.war`
   
 ------------------------------------------------------------------------
 
-#### **Splunk Dashboards for Jenkins**
+## Splunk Dashboards for Jenkins
 
 You can download and install the Splunk App for Jenkins from
 <https://splunkbase.splunk.com/app/3332>
@@ -206,16 +206,6 @@ Screenshots
 <img src="images/app_splunk_app_jenkins_node.png" alt="node detail" width="70%"/>
 <img src="images/app_splunk_app_jenkins_master_health.png" alt="master health" width="70%"/>
 
-
-## How To Contribute
-
--   clone the repo and update code
--   start splunk, you can get a free trail version from
-    [Splunk](https://splunk.com/)
--   run
-    `$ mvn clean verify -Dsplunk-host=localhost -Dsplunk-username=admin -Dsplunk-passwd=changeme`
-    to run tests using local splunk instance.
--   send pull requests
 
 ## Docker Demo Image
 
