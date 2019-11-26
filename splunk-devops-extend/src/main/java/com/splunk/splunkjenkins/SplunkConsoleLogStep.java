@@ -2,8 +2,8 @@ package com.splunk.splunkjenkins;
 
 import com.google.common.collect.ImmutableSet;
 import hudson.Extension;
-import hudson.console.ConsoleLogFilter;
 import hudson.model.Run;
+import org.jenkinsci.plugins.workflow.log.TaskListenerDecorator;
 import org.jenkinsci.plugins.workflow.steps.BodyExecutionCallback;
 import org.jenkinsci.plugins.workflow.steps.BodyInvoker;
 import org.jenkinsci.plugins.workflow.steps.Step;
@@ -14,8 +14,12 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 import javax.annotation.Nonnull;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SplunkConsoleLogStep extends Step {
+    private static final Logger LOG = Logger.getLogger(SplunkConsoleLogStep.class.getName());
+
     @DataBoundConstructor
     public SplunkConsoleLogStep() {
     }
@@ -72,8 +76,15 @@ public class SplunkConsoleLogStep extends Step {
             //refer to WithContextStep implementation
             StepContext context = getContext();
             Run run = context.get(Run.class);
-            ConsoleLogFilter filter = BodyInvoker.mergeConsoleLogFilters(context.get(ConsoleLogFilter.class), new TeeConsoleLogFilter(run));
-            context.newBodyInvoker().withContext(filter).withCallback(BodyExecutionCallback.wrap(context)).start();
+            BodyInvoker invoker = context.newBodyInvoker().withCallback(new BodyExecutionCallbackConsole());
+            if (!SplunkJenkinsInstallation.get().isPipelineFilterEnabled()) {
+                String source = run.getUrl() + "console";
+                invoker.withContext(TaskListenerDecorator.merge(context.get(TaskListenerDecorator.class), new SplunkConsoleTaskListenerDecorator(source)));
+            } else {
+                String jobName = run.getParent().getFullName();
+                LOG.log(Level.INFO, "ignored sendSplunkConsoleLog since global filter is enabled, job-name=" + jobName);
+            }
+            invoker.start();
             return false;
         }
 
@@ -83,6 +94,15 @@ public class SplunkConsoleLogStep extends Step {
         @Override
         public void stop(@Nonnull Throwable cause) throws Exception {
             getContext().onFailure(cause);
+        }
+    }
+
+    public static class BodyExecutionCallbackConsole extends BodyExecutionCallback.TailCall {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected void finished(StepContext stepContext) throws Exception {
+            DelayConsoleLineStream.flushLog();
         }
     }
 }

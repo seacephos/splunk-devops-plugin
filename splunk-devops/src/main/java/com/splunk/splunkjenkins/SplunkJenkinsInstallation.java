@@ -68,6 +68,7 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
     private String metadataHost;
     private String metadataSource;
     private String ignoredJobs;
+    private Boolean globalPipelineFilter;
 
     //below are all transient properties
     public transient Properties metaDataProperties = new Properties();
@@ -623,5 +624,17 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
 
     public void setIgnoredJobs(String ignoredJobs) {
         this.ignoredJobs = ignoredJobs;
+    }
+
+    public Boolean getGlobalPipelineFilter() {
+        return globalPipelineFilter;
+    }
+
+    public void setGlobalPipelineFilter(Boolean globalPipelineFilter) {
+        this.globalPipelineFilter = globalPipelineFilter;
+    }
+
+    public boolean isPipelineFilterEnabled() {
+        return Boolean.TRUE.equals(globalPipelineFilter);
     }
 }

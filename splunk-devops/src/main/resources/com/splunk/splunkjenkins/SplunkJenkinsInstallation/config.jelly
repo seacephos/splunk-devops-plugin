@@ -19,6 +19,9 @@
                  help="/descriptorByName/com.splunk.splunkjenkins.SplunkJenkinsInstallation/help/httpInputConfig">
             <f:checkbox default="true"/>
         </f:entry>
+        <f:entry title="${%Send All Pipeline Console Logs}" field="globalPipelineFilter">
+            <f:checkbox/>
+        </f:entry>
         <f:entry title="${%Jenkins Master Hostname}" field="metadataHost">
             <f:textbox clazz="required"/>
         </f:entry>

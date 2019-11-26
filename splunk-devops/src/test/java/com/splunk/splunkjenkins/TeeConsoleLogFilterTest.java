@@ -1,14 +1,22 @@
 package com.splunk.splunkjenkins;
 
+import com.splunk.splunkjenkins.utils.LogEventHelper;
 import com.splunk.splunkjenkins.utils.SplunkLogService;
+import hudson.console.ConsoleAnnotationOutputStream;
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.tasks.Shell;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import hudson.util.ByteArrayOutputStream2;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

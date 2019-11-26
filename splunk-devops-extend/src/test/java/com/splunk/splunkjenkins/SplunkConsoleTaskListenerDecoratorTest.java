@@ -3,7 +3,10 @@ package com.splunk.splunkjenkins;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,35 +20,41 @@ import static com.splunk.splunkjenkins.SplunkConfigUtil.verifySplunkSearchResult
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class SplunkConsoleLogStepTest {
+public class SplunkConsoleTaskListenerDecoratorTest {
     @ClassRule
     public static BuildWatcher buildWatcher = new BuildWatcher();
+    String id = UUID.randomUUID().toString();
     @Rule
     public JenkinsRule r = new JenkinsRule();
-    String id = UUID.randomUUID().toString();
-
-    private String jobScript = "sendSplunkConsoleLog {" +
-            "node{\n" +
-            "  sh \"echo testjob\";\n" +
+    private String jobScript = "node{\n" +
+            "  sh \"echo SplunkConsoleTaskListenerDecoratorTest\";\n" +
             "  sh \"echo " + id + "\";\n" +
-            " }" +
-            "}";
+            "  echo '" + id + "'" +
+            " }";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUpToken() throws Exception {
         org.junit.Assume.assumeTrue(checkTokenAvailable());
+        SplunkJenkinsInstallation.get().setGlobalPipelineFilter(true);
+    }
+
+    @After
+    public void tearDown() {
+        SplunkJenkinsInstallation.get().setGlobalPipelineFilter(false);
     }
 
     @Test
-    public void testSendConsoleLog() throws Exception {
+    public void testSendConsole() throws Exception {
         long startTime = System.currentTimeMillis();
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-        p.setDefinition(new CpsFlowDefinition(jobScript, true));
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "listener_test");
+        p.setDefinition(new CpsFlowDefinition(jobScript, false));
         WorkflowRun b1 = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
         assertFalse(b1.isBuilding());
-        r.assertLogContains("testjob", b1);
+        r.assertLogContains("SplunkConsoleTaskListenerDecoratorTest", b1);
         assertTrue(b1.getDuration() > 0);
+        //manual flush
+        DelayConsoleLineStream.flushLog();
         //check log
-        verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 1);
+        verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 2);
     }
 }
