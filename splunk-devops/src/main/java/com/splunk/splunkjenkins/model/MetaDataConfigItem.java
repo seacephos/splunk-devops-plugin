@@ -117,7 +117,7 @@ public class MetaDataConfigItem implements Describable<MetaDataConfigItem> {
             m.add("Jenkins Config", EventType.JENKINS_CONFIG.toString());
             m.add("Log File", EventType.FILE.toString());
             m.add("Queue Information", EventType.QUEUE_INFO.toString());
-            m.add("Slave Information", EventType.SLAVE_INFO.toString());
+            m.add("Agent Information", EventType.SLAVE_INFO.toString());
             m.add("Default", "default");
             return m;
         }

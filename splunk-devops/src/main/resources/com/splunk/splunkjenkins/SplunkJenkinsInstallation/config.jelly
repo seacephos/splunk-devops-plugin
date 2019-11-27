@@ -20,7 +20,7 @@
             <f:checkbox default="true"/>
         </f:entry>
         <f:entry title="${%Send All Pipeline Console Logs}" field="globalPipelineFilter">
-            <f:checkbox/>
+            <f:checkbox default="true" />
         </f:entry>
         <f:entry title="${%Jenkins Master Hostname}" field="metadataHost">
             <f:textbox clazz="required"/>

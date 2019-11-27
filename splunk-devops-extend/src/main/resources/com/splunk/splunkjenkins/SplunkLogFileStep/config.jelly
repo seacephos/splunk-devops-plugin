@@ -9,7 +9,7 @@
                  description="${%ant_pattern('excludes','dist/**/*.log')}">
             <f:textbox/>
         </f:entry>
-        <f:entry title="${%Publish from slave}" field="publishFromSlave"
+        <f:entry title="${%Publish from node}" field="publishFromSlave"
                  help="/descriptorByName/com.splunk.splunkjenkins.SplunkArtifactNotifier/help/publishFromSlave">
             <f:checkbox default="true"/>
         </f:entry>
