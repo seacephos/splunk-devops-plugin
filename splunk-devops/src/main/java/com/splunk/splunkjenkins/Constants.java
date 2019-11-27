@@ -1,6 +1,12 @@
 package com.splunk.splunkjenkins;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Constants {
     public static final String TESTCASE = "testcase";
@@ -48,4 +54,20 @@ public class Constants {
     //junit stdio limit, in case keepLongStdio is turned on in junit publisher and large chunk data attached
     //the value should large than junit's trimmed size 100KB, here use 2MiB as default
     public static final int MAX_JUNIT_STDIO_SIZE = Integer.parseInt(System.getProperty("splunkins.junitStdioLimit", "2097152"));
+    public static final Pattern JOB_CONSOLE_FILTER_WHITELIST_PATTERN;
+
+    static {
+        Pattern filterPattern = null;
+        String filterStr = System.getProperty("splunkins.allowConsoleLogPattern", "");
+        if (StringUtils.isNotBlank(filterStr)) {
+            try {
+                filterPattern = Pattern.compile(filterStr);
+
+            } catch (PatternSyntaxException ex) {
+                Logger.getLogger("com.splunk.splunkjenkins.SplunkJenkinsInstallation").log(Level.SEVERE,
+                        "failed to parse allowConsoleLogPattern=" + filterStr, ex);
+            }
+        }
+        JOB_CONSOLE_FILTER_WHITELIST_PATTERN = filterPattern;
+    }
 }

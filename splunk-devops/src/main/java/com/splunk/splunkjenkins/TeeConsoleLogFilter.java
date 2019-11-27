@@ -7,16 +7,17 @@ import hudson.model.AbstractBuild;
 import hudson.model.Computer;
 import hudson.model.Run;
 import hudson.util.ByteArrayOutputStream2;
-import org.apache.commons.lang.StringUtils;
 
-import java.io.*;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import static com.splunk.splunkjenkins.Constants.CONSOLE_TEXT_SINGLE_LINE_MAX_LENGTH;
 import static com.splunk.splunkjenkins.Constants.LOG_TIME_FORMAT;
@@ -39,23 +40,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @SuppressWarnings("nouse")
 public class TeeConsoleLogFilter extends ConsoleLogFilter implements Serializable {
     private static final Logger LOG = Logger.getLogger(TeeConsoleLogFilter.class.getName());
-    private static final Pattern ALLOW_ONLY;
     private static final long serialVersionUID = 1091734060617902662L;
     private static final String SUFFIX = "console";
     private String source;
-
-    static {
-        Pattern filterPattern = null;
-        String filterStr = System.getProperty("splunkins.allowConsoleLogPattern", "");
-        try {
-            if (StringUtils.isNotBlank(filterStr)) {
-                filterPattern = Pattern.compile(filterStr);
-            }
-        } catch (PatternSyntaxException ex) {
-            LOG.log(Level.SEVERE, "failed to parse console filter pattern=" + filterStr, ex);
-        }
-        ALLOW_ONLY = filterPattern;
-    }
 
     public TeeConsoleLogFilter(String source) {
         this.source = source;
@@ -104,12 +91,7 @@ public class TeeConsoleLogFilter extends ConsoleLogFilter implements Serializabl
         if (SplunkJenkinsInstallation.get().isEventDisabled(CONSOLE_LOG)) {
             return output;
         }
-        if (ALLOW_ONLY != null) {
-            if (!ALLOW_ONLY.matcher(source).find()) {
-                LOG.log(Level.FINE, "{0} is not allowed to send console log to splunk", source);
-                return output;
-            }
-        } else if (SplunkJenkinsInstallation.get().isJobIgnored(source)) {
+        if (SplunkJenkinsInstallation.get().isJobIgnored(source)) {
             return output;
         }
         TeeOutputStream teeOutput = new TeeOutputStream(output, source);

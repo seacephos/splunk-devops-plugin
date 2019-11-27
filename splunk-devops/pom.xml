@@ -16,7 +16,7 @@
         Splunk plugin for Jenkins provides deep insights into your Jenkins master and slave infrastructure, job and
         build details such as console logs, status, artifacts, and an incredibly efficient way to analyze test results.
     </description>
-    <url>https://github.com/jenkinsci/splunk-devops-plugin/blob/master/doc/USAGE.md</url>
+    <url>https://github.com/jenkinsci/splunk-devops-plugin/blob/master/doc/splunk-devops-usage.md</url>
     <licenses>
         <license>
             <name>MIT License</name>

@@ -401,11 +401,19 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
     }
 
     public boolean isJobIgnored(String jobUrl) {
-        if (ignoredJobPattern != null) {
-            return ignoredJobPattern.matcher(jobUrl).find();
-        } else {
-            return false;
+        boolean ignored = false;
+        if (JOB_CONSOLE_FILTER_WHITELIST_PATTERN != null) {
+            // white list via system properties
+            if (!JOB_CONSOLE_FILTER_WHITELIST_PATTERN.matcher(jobUrl).find()) {
+                LOG.log(Level.FINE, "{0} is not in whitelist set by splunkins.allowConsoleLogPattern", jobUrl);
+                ignored = true;
+            }
         }
+        if (!ignored && ignoredJobPattern != null) {
+            // black list
+            ignored = ignoredJobPattern.matcher(jobUrl).find();
+        }
+        return ignored;
     }
 
     public void setEnabled(boolean enabled) {
