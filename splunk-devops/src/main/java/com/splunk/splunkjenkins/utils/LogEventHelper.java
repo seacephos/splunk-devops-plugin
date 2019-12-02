@@ -172,49 +172,7 @@ public class LogEventHelper {
         return FormValidation.ok("Splunk connection verified");
     }
 
-    /**
-     * the logical extracted from PlainTextConsoleOutputStream
-     * console annotation will be removed, e.g.
-     * Input:Started by user ESC[8mha:AAAAlh+LCAAAAAAAAP9b85aBtbiIQTGjNKU4P08vOT+vOD8nVc83PyU1x6OyILUoJzMv2y+/JJUBAhiZGBgqihhk0NSjKDWzXb3RdlLBUSYGJk8GtpzUvPSSDB8G5tKinBIGIZ+sxLJE/ZzEvHT94JKizLx0a6BxUmjGOUNodHsLgAzOEgYu/dLi1CL9vNKcHACFIKlWvwAAAA==ESC[0manonymous
-     * Output:Started by user anonymous
-     *
-     * @param in     the byte array
-     * @param length how many bytes we want to read in
-     * @param out    write max(length) to out
-     * @see hudson.console.PlainTextConsoleOutputStream
-     */
-    public static void decodeConsoleBase64Text(byte[] in, int length, ByteArrayOutputStream2 out) {
-        int next = ConsoleNote.findPreamble(in, 0, length);
-
-        // perform byte[]->char[] while figuring out the char positions of the BLOBs
-        int written = 0;
-        while (next >= 0) {
-            if (next > written) {
-                out.write(in, written, next - written);
-                written = next;
-            } else {
-                assert next == written;
-            }
-
-            int rest = length - next;
-            ByteArrayInputStream b = new ByteArrayInputStream(in, next, rest);
-
-            try {
-                ConsoleNote.skip(new DataInputStream(b));
-            } catch (IOException ex) {
-                Logger.getLogger(LogEventHelper.class.getName()).log(Level.SEVERE, "failed to filter blob", ex);
-            }
-
-            int bytesUsed = rest - b.available(); // bytes consumed by annotations
-            written += bytesUsed;
-
-
-            next = ConsoleNote.findPreamble(in, written, length - written);
-        }
-        // finish the remaining bytes->chars conversion
-        out.write(in, written, length - written);
-    }
-
+    
     public static boolean nonEmpty(String value) {
         return emptyToNull(value) != null;
     }

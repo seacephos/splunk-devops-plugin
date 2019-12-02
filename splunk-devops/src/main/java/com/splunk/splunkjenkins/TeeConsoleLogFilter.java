@@ -1,5 +1,6 @@
 package com.splunk.splunkjenkins;
 
+import com.splunk.splunkjenkins.utils.PlainTextConsoleUtils;
 import com.splunk.splunkjenkins.utils.SplunkLogService;
 import hudson.Extension;
 import hudson.console.ConsoleLogFilter;
@@ -22,7 +23,6 @@ import java.util.logging.Logger;
 import static com.splunk.splunkjenkins.Constants.CONSOLE_TEXT_SINGLE_LINE_MAX_LENGTH;
 import static com.splunk.splunkjenkins.Constants.LOG_TIME_FORMAT;
 import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
-import static com.splunk.splunkjenkins.utils.LogEventHelper.decodeConsoleBase64Text;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 
@@ -162,7 +162,7 @@ public class TeeConsoleLogFilter extends ConsoleLogFilter implements Serializabl
             if (requireLineNumber) {
                 logText.write(("line:" + lineCounter + "  ").getBytes(UTF_8));
             }
-            decodeConsoleBase64Text(branch.getBuffer(), branch.size(), logText);
+            PlainTextConsoleUtils.decodeConsole(branch.getBuffer(), branch.size(), logText);
             if (logText.size() >= cacheSize) {
                 flushLog();
             }
