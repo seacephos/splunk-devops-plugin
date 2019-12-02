@@ -1,12 +1,11 @@
 package com.splunk.splunkjenkins;
 
+import com.splunk.splunkjenkins.console.SplunkTaskListenerFactory;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,8 +26,8 @@ public class SplunkConsoleTaskListenerDecoratorTest {
     @Rule
     public JenkinsRule r = new JenkinsRule();
     private String jobScript = "node{\n" +
-            "  sh \"echo SplunkConsoleTaskListenerDecoratorTest\";\n" +
-            "  sh \"echo " + id + "\";\n" +
+            "  parallel first: {sh \"echo SplunkConsoleTaskListenerDecoratorTest\"},\n" +
+            "          second: {sh \"echo " + id + "\"}\n" +
             "  echo '" + id + "'" +
             " }";
 
@@ -53,8 +52,9 @@ public class SplunkConsoleTaskListenerDecoratorTest {
         r.assertLogContains("SplunkConsoleTaskListenerDecoratorTest", b1);
         assertTrue(b1.getDuration() > 0);
         //manual flush
-        DelayConsoleLineStream.flushLog();
+        SplunkTaskListenerFactory.flushLog();
         //check log
         verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 2);
+        verifySplunkSearchResult("source=" + b1.getUrl() + "console label=first", startTime, 1);
     }
 }

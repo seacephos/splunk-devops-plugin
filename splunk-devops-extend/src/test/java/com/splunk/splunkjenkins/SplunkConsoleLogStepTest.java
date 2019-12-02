@@ -1,8 +1,12 @@
 package com.splunk.splunkjenkins;
 
+import com.splunk.splunkjenkins.console.PipelineConsoleDecoder;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
+import org.jenkinsci.plugins.workflow.flow.FlowDurabilityHint;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.jenkinsci.plugins.workflow.job.properties.DurabilityHintJobProperty;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -10,10 +14,12 @@ import org.junit.Test;
 import org.jvnet.hudson.test.BuildWatcher;
 import org.jvnet.hudson.test.JenkinsRule;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import static com.splunk.splunkjenkins.SplunkConfigUtil.checkTokenAvailable;
 import static com.splunk.splunkjenkins.SplunkConfigUtil.verifySplunkSearchResult;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -47,5 +53,34 @@ public class SplunkConsoleLogStepTest {
         assertTrue(b1.getDuration() > 0);
         //check log
         verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 1);
+    }
+
+    @Test
+    public void testDecodeLine() throws Exception {
+        WorkflowJob p = r.createProject(WorkflowJob.class, "p");
+        p.addProperty(new DurabilityHintJobProperty(FlowDurabilityHint.SURVIVABLE_NONATOMIC));
+        p.setDefinition(new CpsFlowDefinition("parallel first: {echo 'hello'}, second: {echo 'in-second'};", true));
+        WorkflowRun b = r.buildAndAssertSuccess(p);
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        b.getLogText().writeRawLogTo(0, out);
+        PipelineConsoleDecoder decoder = new PipelineConsoleDecoder(b);
+        byte[] logs = out.toByteArray();
+        assertTrue("end with \n", logs[logs.length - 1] == '\n');
+        StringBuffer lines = new StringBuffer();
+        // decode line by line
+        ByteArrayOutputStream branch = new ByteArrayOutputStream();
+        int lineCount = 0;
+        for (int i = 0; i < logs.length; i++) {
+            branch.write(logs[i]);
+            if (logs[i] == '\n') {
+                lines.append(decoder.decodeLine(branch.toByteArray(), branch.size()));
+                branch.reset();
+                lineCount++;
+            }
+        }
+        String text = lines.toString();
+        assertTrue(text.contains("label=\"first\" hello"));
+        assertTrue(text.contains("label=\"second\" in-second"));
+        assertEquals(lineCount, StringUtils.countMatches(text, "\n"));
     }
 }

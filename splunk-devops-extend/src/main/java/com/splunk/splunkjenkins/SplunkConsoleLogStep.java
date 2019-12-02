@@ -1,8 +1,11 @@
 package com.splunk.splunkjenkins;
 
 import com.google.common.collect.ImmutableSet;
+import com.splunk.splunkjenkins.console.SplunkConsoleTaskListenerDecorator;
+import com.splunk.splunkjenkins.console.SplunkTaskListenerFactory;
 import hudson.Extension;
 import hudson.model.Run;
+import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.jenkinsci.plugins.workflow.log.TaskListenerDecorator;
 import org.jenkinsci.plugins.workflow.steps.BodyExecutionCallback;
 import org.jenkinsci.plugins.workflow.steps.BodyInvoker;
@@ -78,8 +81,7 @@ public class SplunkConsoleLogStep extends Step {
             Run run = context.get(Run.class);
             BodyInvoker invoker = context.newBodyInvoker().withCallback(new BodyExecutionCallbackConsole());
             if (!SplunkJenkinsInstallation.get().isPipelineFilterEnabled()) {
-                String source = run.getUrl() + "console";
-                invoker.withContext(TaskListenerDecorator.merge(context.get(TaskListenerDecorator.class), new SplunkConsoleTaskListenerDecorator(source)));
+                invoker.withContext(TaskListenerDecorator.merge(context.get(TaskListenerDecorator.class), new SplunkConsoleTaskListenerDecorator((WorkflowRun) run)));
             } else {
                 String jobName = run.getParent().getFullName();
                 LOG.log(Level.INFO, "ignored sendSplunkConsoleLog since global filter is enabled, job-name=" + jobName);
@@ -102,7 +104,7 @@ public class SplunkConsoleLogStep extends Step {
 
         @Override
         protected void finished(StepContext stepContext) throws Exception {
-            DelayConsoleLineStream.flushLog();
+            SplunkTaskListenerFactory.flushLog();
         }
     }
 }

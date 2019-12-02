@@ -1,4 +1,4 @@
-package com.splunk.splunkjenkins;
+package com.splunk.splunkjenkins.console;
 
 import hudson.Extension;
 import hudson.model.AsyncPeriodicWork;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class DelayBufferedConsoleWork extends AsyncPeriodicWork {
     private static final Logger LOGGER = Logger.getLogger(DelayBufferedConsoleWork.class.getName());
 
-    private long period = TimeUnit.MINUTES.toMillis(Math.max(3, Long.getLong(DelayBufferedConsoleWork.class.getName(), 5)));
+    private long period = TimeUnit.MINUTES.toMillis(Math.max(5, Long.getLong(DelayBufferedConsoleWork.class.getName(), 5)));
 
     public DelayBufferedConsoleWork() {
         super("Flush cached splunk console log");
@@ -21,7 +21,7 @@ public class DelayBufferedConsoleWork extends AsyncPeriodicWork {
 
     @Override
     protected void execute(TaskListener taskListener) throws IOException, InterruptedException {
-        DelayConsoleLineStream.flushLog();
+        SplunkTaskListenerFactory.flushLog();
     }
 
     @Override
