@@ -54,6 +54,7 @@ public class Constants {
     //junit stdio limit, in case keepLongStdio is turned on in junit publisher and large chunk data attached
     //the value should large than junit's trimmed size 100KB, here use 2MiB as default
     public static final int MAX_JUNIT_STDIO_SIZE = Integer.parseInt(System.getProperty("splunkins.junitStdioLimit", "2097152"));
+    public static boolean DECODE_PIPELINE_LABEL = Boolean.parseBoolean(System.getProperty("splunkins.decodePipelineLabel", "true"));
     public static final Pattern JOB_CONSOLE_FILTER_WHITELIST_PATTERN;
 
     static {
