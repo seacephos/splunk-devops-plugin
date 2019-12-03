@@ -7,13 +7,11 @@ import hudson.model.TaskListener;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Extension
 public class DelayBufferedConsoleWork extends AsyncPeriodicWork {
-    private static final Logger LOGGER = Logger.getLogger(DelayBufferedConsoleWork.class.getName());
-
-    private long period = TimeUnit.MINUTES.toMillis(Math.max(5, Long.getLong(DelayBufferedConsoleWork.class.getName(), 5)));
+    // not shorter than 2 min, default to 3 min
+    private long period = TimeUnit.MINUTES.toMillis(Math.max(2, Long.getLong(DelayBufferedConsoleWork.class.getName(), 3)));
 
     public DelayBufferedConsoleWork() {
         super("Flush cached splunk console log");

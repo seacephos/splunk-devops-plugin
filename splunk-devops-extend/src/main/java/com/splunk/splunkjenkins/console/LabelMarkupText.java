@@ -45,14 +45,13 @@ public class LabelMarkupText extends MarkupText {
         if (LOG.isLoggable(Level.FINEST)) {
             LOG.finest(tag);
         }
-        annotation = null;
+        annotation = "";
         try {
             Element node = factory.newDocumentBuilder().parse(new StringInputStream(tag)).getDocumentElement();
             // hpyerlink
             String href = node.getAttribute("href");
             if (isNotEmpty(href)) {
-                annotation = href;
-                return;
+                annotation = "href=" + href;
             }
             String nodeId = node.getAttribute("nodeId");
             // NewNodeConsoleNote
@@ -83,7 +82,6 @@ public class LabelMarkupText extends MarkupText {
                         }
                     }
                 }
-                annotation = encloseLabel;
             }
         } catch (Exception e) {
             LOG.warning("failed to parse html console note " + e);

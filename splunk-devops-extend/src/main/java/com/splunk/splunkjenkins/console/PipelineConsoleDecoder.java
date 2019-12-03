@@ -50,9 +50,6 @@ public class PipelineConsoleDecoder implements Serializable {
         int next = arrayIndexOf(in, 0, length, ConsoleNote.PREAMBLE);
         // perform byte[]->char[] while figuring out the char positions of the BLOBs
         int written = 0;
-        if (next == -1) { //text on new line
-            markupText.writePreviousLabel(out);
-        }
         while (next >= 0) {
             if (next > written) {
                 out.write(in, written, next - written);
@@ -72,6 +69,7 @@ public class PipelineConsoleDecoder implements Serializable {
             next = arrayIndexOf(in, written, length, ConsoleNote.PREAMBLE);
         }
         if (length - written > 0) {
+            markupText.writePreviousLabel(out);
             // finish the remaining bytes->chars conversion
             out.write(in, written, length - written);
         }
