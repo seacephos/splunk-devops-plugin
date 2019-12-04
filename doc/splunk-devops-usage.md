@@ -148,7 +148,8 @@ Example: `java -Dsplunkins.buffer=4096 -jar jenkins.war`
 |splunkins.ignoreConfigChangePattern|(queue\|nodeMonitors\|UpdateCenter\|global-build-stats\|fingerprint\|build)(.*?xml)|regular expression for ignoring config file changes|
 |splunkins.verifySSL|false|enable ssl certificate verification for splunk endpoint|
 |splunkins.junitStdioLimit|2097152|trim long junit standard output/error, set it to 0 for unlimited|
-  
+|splunkins.decodePipelineConsole|true|decode pipeline job console note to get parallel label, link href|
+
 ------------------------------------------------------------------------
 
 ## Splunk Dashboards for Jenkins

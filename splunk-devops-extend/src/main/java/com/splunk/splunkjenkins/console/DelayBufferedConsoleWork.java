@@ -10,8 +10,8 @@ import java.util.logging.Level;
 
 @Extension
 public class DelayBufferedConsoleWork extends AsyncPeriodicWork {
-    // not shorter than 2 min, default to 3 min
-    private long period = TimeUnit.MINUTES.toMillis(Math.max(2, Long.getLong(DelayBufferedConsoleWork.class.getName(), 3)));
+    // not shorter than 15s, default to 1 min 30s
+    private long period = TimeUnit.SECONDS.toMillis(Math.max(15, Long.getLong(DelayBufferedConsoleWork.class.getName(), 90)));
 
     public DelayBufferedConsoleWork() {
         super("Flush cached splunk console log");

@@ -1,3 +1,8 @@
+### 1.9.0
+-   update wording slave to agent for display
+-   pipeline job: send all pipeline console logs if it is enabled globally, `sendSplunkConsoleLog` step is not needed any more
+-   pipeline job: remove ansi color escape code
+
 ### 1.8.2 (November 1, 2019) 
 -   truncate long junit standard output/error before sending
 
@@ -7,8 +12,8 @@
 
 ### 1.8.0 (August 14, 2019) 
 
--   fix groovy synatx validation security issue
--   update minium jenkins version requirement to 2.60.3, script-security
+-   fix groovy syntax validation security issue
+-   update minimum jenkins version requirement to 2.60.3, script-security
     to 1.61
 
 ### 1.7.4 (June 14, 2019) 
@@ -59,7 +64,7 @@
 
 ### 1.6.3 (Dec 1, 2017)  
 
--   fix configuration miration issue for versions prior to 1.5.0
+-   fix configuration migration issue for versions prior to 1.5.0
 
 ### 1.6.2 (Nov 28, 2017)  
 
@@ -137,7 +142,7 @@
 
 ### 1.4.1 (Dec 19, 2016)
 
--   Send seperate event for running jobs, used for long running job
+-   Send separate event for running jobs, used for long running job
     alert
 
 ### 1.4 (Dec 19, 2016)

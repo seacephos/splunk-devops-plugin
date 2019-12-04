@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import static com.splunk.splunkjenkins.Constants.CONSOLE_TEXT_SINGLE_LINE_MAX_LENGTH;
 import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
@@ -15,6 +16,7 @@ import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
 public class LabelConsoleLineStream extends FilterOutputStream {
     private static final int RECEIVE_BUFFER_SIZE = 512;
     private static final Logger LOGGER = Logger.getLogger(LabelConsoleLineStream.class.getName());
+    public static final Pattern ANSI_COLOR_ESCAPE = Pattern.compile("\u001B\\[[\\d;]+m");
     private ByteArrayOutputStream2 branch = new ByteArrayOutputStream2(RECEIVE_BUFFER_SIZE);
     PipelineConsoleDecoder decoder;
     String source;
@@ -44,6 +46,7 @@ public class LabelConsoleLineStream extends FilterOutputStream {
         // reuse the buffer under normal circumstances
         branch.reset();
         if (line != null && !"".equals(line)) {
+            line = ANSI_COLOR_ESCAPE.matcher(line).replaceAll("");
             EventRecord record = new EventRecord(line, CONSOLE_LOG);
             record.setSource(source);
             SplunkTaskListenerFactory.enqueue(record);

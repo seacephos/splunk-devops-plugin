@@ -19,6 +19,7 @@ import java.util.UUID;
 
 import static com.splunk.splunkjenkins.SplunkConfigUtil.checkTokenAvailable;
 import static com.splunk.splunkjenkins.SplunkConfigUtil.verifySplunkSearchResult;
+import static com.splunk.splunkjenkins.console.LabelConsoleLineStream.ANSI_COLOR_ESCAPE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -85,5 +86,12 @@ public class SplunkConsoleLogStepTest {
         assertTrue(text.contains("label=\"second\" in-second"));
         assertEquals(lineCount, StringUtils.countMatches(text, "\n"));
         assertEquals(2, StringUtils.countMatches(text, "label=\"second\" "));
+    }
+
+    @Test
+    public void testAnsilColor() {
+        String lineWithAnsi = "\u001B[0;31mline in red\nend\u001B[0m";
+        String line = ANSI_COLOR_ESCAPE.matcher(lineWithAnsi).replaceAll("");
+        assertEquals("line in red\nend", line);
     }
 }

@@ -10,7 +10,7 @@ sendSplunkFile includes: "*.log", sizeLimit: "50MB"
 
 - sendSplunkConsoleLog
 
-since version 1.8.3, the plugin can capture all pipeline log via [TaskListenerDecorator](https://javadoc.jenkins.io/plugin/workflow-api/org/jenkinsci/plugins/workflow/log/TaskListenerDecorator.html)
+since version 1.9.0, the plugin is able to capture all pipeline log via [TaskListenerDecorator](https://javadoc.jenkins.io/plugin/workflow-api/org/jenkinsci/plugins/workflow/log/TaskListenerDecorator.html)
 
 ![enable-pipeline-log](images/pipeline_filter_option.png)
 
@@ -40,3 +40,7 @@ pipeline {
     }
 }
 ```
+
+
+## Change Log
+Located in the [CHANGELOG.md](CHANGELOG.md)
