@@ -616,6 +616,10 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
             }
         }
         this.metadataItemSet = MetaDataConfigItem.loadProps(this.metaDataConfig);
+        //migrate settings prior to 1.9.0
+        if (this.globalPipelineFilter == null) {
+            this.globalPipelineFilter = true;
+        }
     }
 
     public String getIgnoredJobs() {

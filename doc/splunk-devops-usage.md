@@ -145,7 +145,7 @@ Example: `java -Dsplunkins.buffer=4096 -jar jenkins.war`
 |splunkins.buffer|4096|console log buffer size|
 |splunkins.consoleLogFilterPattern|(empty)| regular expression for 'interesting' build. if it is set, only send console log to splunk for the job whose build url matches the pattern|
 |splunkins.debugLogBatchSize|128|batch size for sending verbose level (FINE,FINER,FINEST) log record|
-|splunkins.ignoreConfigChangePattern|(queue\|nodeMonitors\|UpdateCenter\|global-build-stats\|fingerprint\|build)(.*?xml)|regular expression for ignoring config file changes|
+|splunkins.ignoreConfigChangePattern|(?:queue&#124;nodeMonitors&#124;UpdateCenter&#124;global-build-stats).xml&#124;/(?:fingerprint&#124;builds&#124;config-history)/.*?xml|regular expression for ignoring config file changes|
 |splunkins.verifySSL|false|enable ssl certificate verification for splunk endpoint|
 |splunkins.junitStdioLimit|2097152|trim long junit standard output/error, set it to 0 for unlimited|
 |splunkins.decodePipelineConsole|true|decode pipeline job console note to get parallel label, link href|

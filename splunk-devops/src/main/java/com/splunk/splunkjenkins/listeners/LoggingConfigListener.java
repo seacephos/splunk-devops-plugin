@@ -35,9 +35,9 @@ public class LoggingConfigListener extends SaveableListener {
     private static final String XML_COMMENT = "<!--<![CDATA[%s]]>-->\n";
     private static final Logger LOGGER = Logger.getLogger(LoggingConfigListener.class.getName());
     //queue.xml or build/*/config.xml
-    private static final String IGNORE_CONFIG_CHANGE_PATTERN = "(queue|nodeMonitors|UpdateCenter|global-build-stats" +
-            "|fingerprint|build)(.*?xml)";
-    private static final Pattern IGNORED;
+    private static final String IGNORE_CONFIG_CHANGE_PATTERN = "(?:queue|nodeMonitors|UpdateCenter|global-build-stats).xml|" +
+            "/(?:fingerprint|builds|config-history)/.*?xml";
+    public static final Pattern IGNORED;
 
     static {
         String ignorePatternStr = System.getProperty("splunkins.ignoreConfigChangePattern", IGNORE_CONFIG_CHANGE_PATTERN);
