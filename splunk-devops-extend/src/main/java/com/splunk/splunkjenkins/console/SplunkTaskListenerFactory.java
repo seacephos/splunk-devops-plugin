@@ -28,6 +28,7 @@ import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
 @Extension
 public class SplunkTaskListenerFactory implements TaskListenerDecorator.Factory {
     private static final Logger LOGGER = Logger.getLogger(SplunkConsoleTaskListenerDecorator.class.getName());
+    private static final int CACHED_LINES_LIMIT = 200;
     private static final ConcurrentLinkedQueue<EventRecord> consoleQueue = new ConcurrentLinkedQueue<>();
     private static final LoadingCache<WorkflowRun, SplunkConsoleTaskListenerDecorator> cachedDecorator = CacheBuilder.newBuilder()
             .weakKeys()
@@ -69,7 +70,7 @@ public class SplunkTaskListenerFactory implements TaskListenerDecorator.Factory 
         boolean added = consoleQueue.add(record);
         if (!added) {
             LOGGER.warning("failed to add log " + record.getMessageString());
-        } else if (consoleQueue.size() > 100) {
+        } else if (consoleQueue.size() > CACHED_LINES_LIMIT) {
             flushLog();
         }
     }
