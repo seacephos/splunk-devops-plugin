@@ -55,6 +55,6 @@ public class SplunkConsoleTaskListenerDecoratorTest {
         SplunkTaskListenerFactory.flushLog();
         //check log
         verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 2);
-        verifySplunkSearchResult("source=" + b1.getUrl() + "console label=first", startTime, 1);
+        verifySplunkSearchResult("source=" + b1.getUrl() + "console parallel_label=first", startTime, 1);
     }
 }

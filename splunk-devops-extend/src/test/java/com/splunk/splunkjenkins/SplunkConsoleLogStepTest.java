@@ -80,10 +80,10 @@ public class SplunkConsoleLogStepTest {
             }
         }
         String text = lines.toString();
-        assertTrue(text.contains("label=\"first\" [Pipeline] echo"));
-        assertTrue(text.contains("label=\"first\" hello"));
-        assertTrue(text.contains("label=\"second\" [Pipeline] echo"));
-        assertTrue(text.contains("label=\"second\" in-second"));
+        assertTrue(text.contains("parallel_label=\"first\" [Pipeline] echo"));
+        assertTrue(text.contains("parallel_label=\"first\" hello"));
+        assertTrue(text.contains("parallel_label=\"second\" [Pipeline] echo"));
+        assertTrue(text.contains("parallel_label=\"second\" in-second"));
         assertEquals(lineCount, StringUtils.countMatches(text, "\n"));
         assertEquals(2, StringUtils.countMatches(text, "label=\"second\" "));
     }
