@@ -1,4 +1,4 @@
-### 1.9.0
+### 1.9.0 (December 31, 2019)
 -   update wording slave to agent for display
 -   pipeline job: send all pipeline console logs if it is enabled globally, `sendSplunkConsoleLog` step is not needed any more
 -   pipeline job: remove ansi color escape code

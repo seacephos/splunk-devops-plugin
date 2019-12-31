@@ -2,7 +2,7 @@
 
 ### Provided steps
 - sendSplunkFile
-```
+```Groovy
 sendSplunkFile includes: "*.log", sizeLimit: "50MB"
 ``` 
 
@@ -16,15 +16,15 @@ since version 1.9.0, the plugin is able to capture all pipeline log via [TaskLis
 
 sendSplunkConsoleLog step is only required when the global option is not checked
 
-```
-#scripted pipeline
+```Groovy
+// scripted pipeline
 sendSplunkConsoleLog {
   node{
     sh "echo testjob";
  }
 }
 
-#declarative pipeline
+// declarative pipeline
 pipeline {
     agent any
     options {

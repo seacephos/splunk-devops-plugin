@@ -109,7 +109,7 @@ access to the following objects and methods:
 -   Here is the default settings for post job data processing (since
     v.1.5.0)
 
-``` syntaxhighlighter-pre
+```Groovy
 //send job metadata and junit reports with page size set to 50 (each event contains max 50 test cases)
 splunkins.sendTestReport(50)
 //send coverage, each event contains max 50 class metrics
@@ -201,18 +201,20 @@ compliance use cases.
 
 Screenshots
 
-<img src="images/app_splunk_app_jenkins_build.png" alt="build analysis" width="70%"/>
-<img src="images/app_splunk_app_jenkins_testanalysis.png" alt="test analysis" width="70%"/>
-<img src="images/app_splunk_app_jenkins_node_overview.png" alt="node overview" width="70%"/>
-<img src="images/app_splunk_app_jenkins_node.png" alt="node detail" width="70%"/>
-<img src="images/app_splunk_app_jenkins_master_health.png" alt="master health" width="70%"/>
+Build Analysis  
+<img src="images/app_splunk_app_jenkins_build.png" alt="build analysis" style="border:2px solid;" />
 
+Test Analysis  
+<img src="images/app_splunk_app_jenkins_testanalysis.png" alt="test analysis" style="border:2px solid;" />
 
-## Docker Demo Image
+Node Overview  
+<img src="images/app_splunk_app_jenkins_node_overview.png" alt="node overview" style="border:2px solid;"/>
 
-``` syntaxhighlighter-pre
-curl -s -L https://raw.githubusercontent.com/fengxx/docker-splunk-app-jenkins/master/demo.sh | sh
-```
+Node Detail  
+<img src="images/app_splunk_app_jenkins_node.png" alt="node detail" style="border:2px solid;"/>
+
+Jenkins Health  
+<img src="images/app_splunk_app_jenkins_master_health.png" alt="master health" style="border:2px solid;"/>
 
 ## FAQ
 
@@ -221,7 +223,7 @@ curl -s -L https://raw.githubusercontent.com/fengxx/docker-splunk-app-jenkins/ma
 Access \<jenkins\_url\>/script, and execute the groovy code (update the
 time range if needed).
 
-``` syntaxhighlighter-pre
+```Groovy
 def dataParser=new java.text.SimpleDateFormat("yyyy-MMM-dd HH:mm")
 def startTime=0
 def endTime=dataParser.parse("2016-OCT-26 13:24").getTime()
@@ -236,7 +238,7 @@ Please try below options
 a\) Adjust splunk queue size to a larger value, such as 5MB.
 Edit SPLUNK\_HOME/etc/system/local/server.conf and add
 
-``` syntaxhighlighter-pre
+```INI
 [queue]
 maxSize = 5MB
 ```
@@ -244,7 +246,7 @@ maxSize = 5MB
 b\) Adjust console text/log file buffer size, such as 10KB, Add below
 line to Jenkins startup script
 
-``` syntaxhighlighter-pre
+```java
 -Dsplunkins.buffer=10240
 ```
 
@@ -254,7 +256,7 @@ You can use "Customize Event Processing Script"
 
   Click here to expand...
 
-``` syntaxhighlighter-pre
+```Groovy
 /**
  * Transform job metadata before sending to splunk
  * This script is configured in Jenkins->Configure System->Splunk for Jenkins Configuration->Advanced
