@@ -92,6 +92,8 @@ public class LabelMarkupText extends MarkupText {
         if (isNotEmpty(annotation)) {
             out.write(annotation.getBytes());
             out.write(' ');
+            //clear annotation
+            annotation = null;
         }
     }
 
