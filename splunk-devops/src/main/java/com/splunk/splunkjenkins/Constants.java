@@ -55,6 +55,7 @@ public class Constants {
     //the value should large than junit's trimmed size 100KB, here use 2MiB as default
     public static final int MAX_JUNIT_STDIO_SIZE = Integer.parseInt(System.getProperty("splunkins.junitStdioLimit", "2097152"));
     public static boolean DECODE_PIPELINE_CONSOLE = Boolean.parseBoolean(System.getProperty("splunkins.decodePipelineConsole", "true"));
+    public static final boolean ENABLE_POST_LOGGER = Boolean.parseBoolean(System.getProperty("splunkins.auditPostRequest", "true"));
     public static final Pattern JOB_CONSOLE_FILTER_WHITELIST_PATTERN;
 
     static {

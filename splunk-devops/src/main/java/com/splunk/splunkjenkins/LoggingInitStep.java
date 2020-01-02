@@ -2,8 +2,10 @@ package com.splunk.splunkjenkins;
 
 import com.splunk.splunkjenkins.utils.LogEventHelper;
 import hudson.init.Initializer;
+import hudson.util.PluginServletFilter;
 import jenkins.util.Timer;
 
+import javax.servlet.ServletException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -40,6 +42,14 @@ public class LoggingInitStep {
         SplunkJenkinsInstallation.get().updateCache();
         SplunkJenkinsInstallation.markComplete(true);
         Logger.getLogger(LoggingInitStep.class.getName()).info("plugin splunk-devops version " + LogEventHelper.getBuildVersion() + " loaded");
+        // check filter
+        if (Constants.ENABLE_POST_LOGGER) {
+            try {
+                PluginServletFilter.addFilter(new WebPostAccessLogger());
+            } catch (ServletException e) {
+                Logger.getLogger(LoggingInitStep.class.getName()).warning("failed to register splunk web access logger");
+            }
+        }
     }
 
 }

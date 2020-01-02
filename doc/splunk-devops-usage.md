@@ -149,6 +149,7 @@ Example: `java -Dsplunkins.buffer=4096 -jar jenkins.war`
 |splunkins.verifySSL|false|enable ssl certificate verification for splunk endpoint|
 |splunkins.junitStdioLimit|2097152|trim long junit standard output/error, set it to 0 for unlimited|
 |splunkins.decodePipelineConsole|true|decode pipeline job console note to get parallel label, link href|
+|splunkins.auditPostRequest|true|audit trail for script invoking, credentials updating|
 
 ------------------------------------------------------------------------
 
