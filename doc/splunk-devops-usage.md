@@ -255,8 +255,6 @@ line to Jenkins startup script
 
 You can use "Customize Event Processing Script" 
 
-  Click here to expand...
-
 ```Groovy
 /**
  * Transform job metadata before sending to splunk
