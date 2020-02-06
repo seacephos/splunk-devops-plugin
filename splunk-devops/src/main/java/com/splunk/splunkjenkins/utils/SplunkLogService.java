@@ -73,8 +73,10 @@ public class SplunkLogService {
             }
         };
         this.client = HttpClients.custom()
-            .setConnectionManager(this.connMgr).setKeepAliveStrategy(myStrategy)
+            .setConnectionManager(this.connMgr)
+            .setKeepAliveStrategy(myStrategy)
             .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
+            .useSystemProperties()
             .build();
     }
 
