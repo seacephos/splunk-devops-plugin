@@ -1,3 +1,9 @@
+### 1.9.2 (February 13, 2020) 
+-   use system properties(http.proxyHost http.proxyPort http.nonProxyHosts) for configuration, thanks to [Mike Noseworthy](https://github.com/noseworthy)
+
+### 1.9.1 (January 3, 2020) 
+-   audit trail for http post submit (configSubmit, updateSubmit, doDelete)
+
 ### 1.9.0 (December 31, 2019)
 -   update wording slave to agent for display
 -   pipeline job: send all pipeline console logs if it is enabled globally, `sendSplunkConsoleLog` step is not needed any more
