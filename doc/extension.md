@@ -1,4 +1,4 @@
-Plugin implements some interfaces and mark the implementation to use annotation @Extension so Jenkins can load it dynamically
+Plugin implements some interfaces and marks the implementation to use annotation @Extension so Jenkins can load it dynamically
 
 # Configure
 
