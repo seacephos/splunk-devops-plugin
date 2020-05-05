@@ -1,3 +1,6 @@
+### 1.9.3 (May 5, 2020) 
+- disable jdk logger when console_log is disabled
+
 ### 1.9.2 (February 13, 2020) 
 -   use system properties(http.proxyHost http.proxyPort http.nonProxyHosts) for configuration, thanks to [Mike Noseworthy](https://github.com/noseworthy)
 
