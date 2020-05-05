@@ -40,6 +40,10 @@ public class JdkSplunkLogHandler extends Handler {
         if (!isLoggable(record)) {
             return;
         }
+        // jdk logger shares metadata config of console log
+        if (SplunkJenkinsInstallation.get().isEventDisabled(EventType.CONSOLE_LOG)) {
+            return;
+        }
         Map logEvent = splunkFormatter.getEvent(record);
         if (logEvent == null || logEvent.isEmpty()) {
             return;
