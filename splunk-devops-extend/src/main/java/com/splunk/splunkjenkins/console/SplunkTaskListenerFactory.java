@@ -25,12 +25,12 @@ import java.util.logging.Logger;
 
 import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
 
-@Extension
+@Extension(optional = true)
 public class SplunkTaskListenerFactory implements TaskListenerDecorator.Factory {
     private static final Logger LOGGER = Logger.getLogger(SplunkConsoleTaskListenerDecorator.class.getName());
     private static final int CACHED_LINES_LIMIT = 200;
-    private static final ConcurrentLinkedQueue<EventRecord> consoleQueue = new ConcurrentLinkedQueue<>();
-    private static final LoadingCache<WorkflowRun, SplunkConsoleTaskListenerDecorator> cachedDecorator = CacheBuilder.newBuilder()
+    private static final transient ConcurrentLinkedQueue<EventRecord> consoleQueue = new ConcurrentLinkedQueue<>();
+    private static final transient LoadingCache<WorkflowRun, SplunkConsoleTaskListenerDecorator> cachedDecorator = CacheBuilder.newBuilder()
             .weakKeys()
             .maximumSize(1024)
             .build(new CacheLoader<WorkflowRun, SplunkConsoleTaskListenerDecorator>() {

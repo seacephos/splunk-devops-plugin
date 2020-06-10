@@ -101,9 +101,15 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
 
     public static SplunkJenkinsInstallation get() {
         if (cachedConfig == null) {
+            if (Jenkins.getInstanceOrNull() == null) {
+                // Jenkins is not ready yet
+                SplunkJenkinsInstallation temp = new SplunkJenkinsInstallation(false);
+                temp.enabled = false;
+                return temp;
+            }
             synchronized (SplunkJenkinsInstallation.class) {
                 if (cachedConfig == null) {
-                    cachedConfig = (SplunkJenkinsInstallation) Jenkins.getActiveInstance().getDescriptor(SplunkJenkinsInstallation.class);
+                    cachedConfig = (SplunkJenkinsInstallation) Jenkins.getInstance().getDescriptor(SplunkJenkinsInstallation.class);
                 }
             }
         }
