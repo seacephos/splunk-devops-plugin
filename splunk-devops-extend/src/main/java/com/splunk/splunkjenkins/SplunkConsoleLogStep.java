@@ -1,8 +1,8 @@
 package com.splunk.splunkjenkins;
 
 import com.google.common.collect.ImmutableSet;
+import com.splunk.splunkjenkins.console.ConsoleRecordCacheUtils;
 import com.splunk.splunkjenkins.console.SplunkConsoleTaskListenerDecorator;
-import com.splunk.splunkjenkins.console.SplunkTaskListenerFactory;
 import hudson.Extension;
 import hudson.model.Run;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -104,7 +104,7 @@ public class SplunkConsoleLogStep extends Step {
 
         @Override
         protected void finished(StepContext stepContext) throws Exception {
-            SplunkTaskListenerFactory.flushLog();
+            ConsoleRecordCacheUtils.flushLog();
         }
     }
 }

@@ -19,8 +19,8 @@ import static java.util.logging.Level.WARNING;
 public class PipelineConsoleDecoder implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = Logger.getLogger(PipelineConsoleDecoder.class.getName());
-    private WorkflowRun run;
-    private LabelMarkupText markupText = new LabelMarkupText();
+    private transient WorkflowRun run;
+    private transient LabelMarkupText markupText = new LabelMarkupText();
     private boolean parseLabelFlag = Constants.DECODE_PIPELINE_CONSOLE;
 
     public PipelineConsoleDecoder(WorkflowRun run) {

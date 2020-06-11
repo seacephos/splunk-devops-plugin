@@ -6,8 +6,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
 import hudson.util.ByteArrayOutputStream2;
-import jenkins.model.Jenkins;
-import org.apache.commons.beanutils.BeanUtils;
+import jenkins.util.JenkinsJVM;
 import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.*;
@@ -120,18 +119,7 @@ public class LogFileCallable implements FilePath.FileCallable<Integer> {
         if (enabledSplunkConfig) {
             return;
         }
-        // Init SplunkJenkins global config in slave, can not reference Jenkins.getInstance(), Xtream
-        // need built from map
-        SplunkJenkinsInstallation config = new SplunkJenkinsInstallation(false);
-        try {
-            BeanUtils.populate(config, eventCollectorProperty);
-            config.setEnabled(true);
-            SplunkJenkinsInstallation.initOnSlave(config);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //only use one thread on slave
-        SplunkLogService.getInstance().MAX_WORKER_COUNT = 1;
+        RemoteUtils.initSplunkConfigOnAgent(eventCollectorProperty);
         enabledSplunkConfig = true;
     }
 
@@ -151,7 +139,7 @@ public class LogFileCallable implements FilePath.FileCallable<Integer> {
      */
     @Override
     public Integer invoke(File f, VirtualChannel channel) throws IOException, InterruptedException {
-        if (!enabledSplunkConfig && Jenkins.getInstanceOrNull() == null) {
+        if (!JenkinsJVM.isJenkinsJVM()) {
             //running on slave node, need init config
             initSplunkins();
         }

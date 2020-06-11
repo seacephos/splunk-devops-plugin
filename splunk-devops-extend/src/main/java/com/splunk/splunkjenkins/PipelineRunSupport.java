@@ -53,7 +53,6 @@ public class PipelineRunSupport extends LoggingJobExtractor<WorkflowRun> {
                 }
             }
             SplunkTaskListenerFactory.removeCache(workflowRun);
-            SplunkTaskListenerFactory.flushLog();
         }
         return info;
     }

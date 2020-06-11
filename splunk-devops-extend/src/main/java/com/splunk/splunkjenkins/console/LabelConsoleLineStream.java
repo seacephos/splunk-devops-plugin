@@ -49,15 +49,14 @@ public class LabelConsoleLineStream extends FilterOutputStream {
             line = ANSI_COLOR_ESCAPE.matcher(line).replaceAll("");
             EventRecord record = new EventRecord(line, CONSOLE_LOG);
             record.setSource(source);
-            SplunkTaskListenerFactory.enqueue(record);
+            ConsoleRecordCacheUtils.enqueue(record);
         }
     }
 
-
     @Override
-    public void close() throws IOException {
-        super.close();
-        SplunkTaskListenerFactory.flushLog();
+    public void flush() throws IOException {
+        super.flush();
+        ConsoleRecordCacheUtils.flushLog();
         LOGGER.log(Level.FINE, "flush splunk log for " + source);
     }
 }

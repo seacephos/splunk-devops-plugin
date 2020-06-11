@@ -1,6 +1,6 @@
 package com.splunk.splunkjenkins;
 
-import com.splunk.splunkjenkins.console.SplunkTaskListenerFactory;
+import com.splunk.splunkjenkins.console.ConsoleRecordCacheUtils;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -52,7 +52,7 @@ public class SplunkConsoleTaskListenerDecoratorTest {
         r.assertLogContains("SplunkConsoleTaskListenerDecoratorTest", b1);
         assertTrue(b1.getDuration() > 0);
         //manual flush
-        SplunkTaskListenerFactory.flushLog();
+        ConsoleRecordCacheUtils.flushLog();
         //check log
         verifySplunkSearchResult("source=" + b1.getUrl() + "console " + id, startTime, 2);
         verifySplunkSearchResult("source=" + b1.getUrl() + "console parallel_label=first", startTime, 1);

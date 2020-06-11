@@ -19,7 +19,7 @@ public class DelayBufferedConsoleWork extends AsyncPeriodicWork {
 
     @Override
     protected void execute(TaskListener taskListener) throws IOException, InterruptedException {
-        SplunkTaskListenerFactory.flushLog();
+        ConsoleRecordCacheUtils.flushLog();
     }
 
     @Override

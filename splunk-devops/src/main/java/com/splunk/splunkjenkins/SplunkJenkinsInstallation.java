@@ -26,16 +26,27 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.net.*;
-import java.util.*;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static com.splunk.splunkjenkins.Constants.*;
-import static com.splunk.splunkjenkins.utils.LogEventHelper.*;
 import static com.splunk.splunkjenkins.utils.LogEventHelper.getDefaultDslScript;
+import static com.splunk.splunkjenkins.utils.LogEventHelper.nonEmpty;
+import static com.splunk.splunkjenkins.utils.LogEventHelper.validateGroovyScript;
+import static com.splunk.splunkjenkins.utils.LogEventHelper.verifyHttpInput;
 import static groovy.lang.GroovyShell.DEFAULT_CODE_BASE;
 import static java.util.regex.Pattern.CASE_INSENSITIVE;
 import static org.apache.commons.lang.StringUtils.isEmpty;
@@ -133,11 +144,11 @@ public class SplunkJenkinsInstallation extends GlobalConfiguration {
     }
 
     /**
-     * Note: this method is meant to be called on slave only!
+     * Note: this method is meant to be called on agent only!
      *
-     * @param config the SplunkJenkinsInstallation to be used on Slave
+     * @param config the SplunkJenkinsInstallation to be used on Agent
      */
-    public static void initOnSlave(SplunkJenkinsInstallation config) {
+    public static void initOnAgent(SplunkJenkinsInstallation config) {
         SplunkJenkinsInstallation.cachedConfig = config;
         config.updateCache();
     }
