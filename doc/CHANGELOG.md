@@ -1,3 +1,6 @@
+### 1.9.4 (July 13, 2020) 
+- fix JENKINS-62663 support remote TaskListener
+
 ### 1.9.3 (May 5, 2020) 
 - disable jdk logger when console_log is disabled
 
