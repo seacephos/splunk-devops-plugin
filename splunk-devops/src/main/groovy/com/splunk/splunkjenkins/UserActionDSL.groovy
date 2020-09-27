@@ -4,13 +4,13 @@ import com.splunk.splunkjenkins.listeners.LoggingRunListener
 import com.splunk.splunkjenkins.utils.LogEventHelper
 import hudson.model.Run
 import hudson.model.TaskListener
-import hudson.util.spring.ClosureScript
 import jenkins.model.Jenkins
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval
 import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage
+import org.kohsuke.stapler.jelly.groovy.GroovyClosureScript
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -39,12 +39,12 @@ public class UserActionDSL {
                     ScriptApproval.get().using(scriptText, GroovyLanguage.get())
                     //call setDelegate to RunDelegate instance and run
                     CompilerConfiguration cc = new CompilerConfiguration();
-                    cc.scriptBaseClass = ClosureScript.class.name;
+                    cc.scriptBaseClass = GroovyClosureScript.class.name;
                     ImportCustomizer ic = new ImportCustomizer()
                     ic.addStaticStars(LogEventHelper.class.name)
                     ic.addStarImport("jenkins.model")
                     cc.addCompilationCustomizers(ic)
-                    ClosureScript dslScript = (ClosureScript) new GroovyShell(Jenkins.instance.pluginManager.uberClassLoader, binding, cc)
+                    GroovyClosureScript dslScript = (GroovyClosureScript) new GroovyShell(Jenkins.instance.pluginManager.uberClassLoader, binding, cc)
                             .parse(codeSource)
                     dslScript.setDelegate(delegate);
                     dslScript.run()
