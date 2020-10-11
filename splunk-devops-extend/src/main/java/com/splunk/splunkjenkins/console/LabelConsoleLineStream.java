@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 import static com.splunk.splunkjenkins.Constants.CONSOLE_TEXT_SINGLE_LINE_MAX_LENGTH;
 import static com.splunk.splunkjenkins.model.EventType.CONSOLE_LOG;
 
@@ -45,7 +47,7 @@ public class LabelConsoleLineStream extends FilterOutputStream {
         String line = decoder.decodeLine(branch.getBuffer(), branch.size());
         // reuse the buffer under normal circumstances
         branch.reset();
-        if (line != null && !"".equals(line)) {
+        if (line != null && StringUtils.isNotBlank(line)) {
             line = ANSI_COLOR_ESCAPE.matcher(line).replaceAll("");
             EventRecord record = new EventRecord(line, CONSOLE_LOG);
             record.setSource(source);
