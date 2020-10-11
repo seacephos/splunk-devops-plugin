@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
@@ -90,7 +91,7 @@ public class LabelMarkupText extends MarkupText {
 
     public void write(OutputStream out) throws IOException {
         if (isNotEmpty(annotation)) {
-            out.write(annotation.getBytes());
+            out.write(annotation.getBytes(UTF_8));
             out.write(' ');
             //clear annotation
             annotation = null;
@@ -99,7 +100,7 @@ public class LabelMarkupText extends MarkupText {
 
     public void writePreviousLabel(OutputStream out) throws IOException {
         if (isNotEmpty(encloseLabel)) {
-            out.write(encloseLabel.getBytes());
+            out.write(encloseLabel.getBytes(UTF_8));
             out.write(' ');
         }
     }
