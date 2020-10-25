@@ -1,3 +1,7 @@
+### 1.9.5 (October 25, 2020) 
+- hudson.util.spring.ClosureScript → org.kohsuke.stapler.jelly.groovy.GroovyClosureScript, thanks to [Jesse Glick](https://github.com/jglick)
+- discard console log containing only whitespaces, thanks to [karjsim](https://github.com/karjsim)
+
 ### 1.9.4 (July 13, 2020) 
 - fix JENKINS-62663 support remote TaskListener
 
