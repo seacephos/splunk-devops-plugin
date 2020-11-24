@@ -19,6 +19,11 @@ public class Constants {
     public static final String LOG_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
     public final static String SLAVE_TAG_NAME = "slave";
     public final static String QUEUE_TAG_NAME = "queue";
+    public final static String ENQUEUE_TAG_NAME = "enqueue";
+    public final static String DEQUEUE_TAG_NAME = "dequeue";
+    public final static String BUILDABLE_PHASE_NAME = "buildable";
+    public final static String BLOCKED_PHASE_NAME = "blocked";
+    public final static String WAITING_PHASE_NAME = "waiting";
     public final static String QUEUE_WAITING_ITEM_NAME = "queue_item";
     public static final String JOB_EVENT_TAG_NAME = "job_event";
     public static final String JOB_EVENT_MONITOR = "job_monitor";
