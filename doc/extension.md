@@ -26,6 +26,7 @@ Plugin implements some interfaces and marks the implementation to use annotation
 ```
     it will call fireOnDeleted to notify all ItemListeners
 
+
 ## Listeners list
 #### [SecurityListener](http://javadoc.jenkins-ci.org/jenkins/security/SecurityListener.html)
     record user login/logout and failedToLogIn events
