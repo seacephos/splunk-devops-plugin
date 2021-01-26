@@ -146,7 +146,7 @@ public class LoggingQueueListener extends QueueListener {
         }
         queue.put(id, System.currentTimeMillis());
         String eventTypeEnqueue;
-        if(eventType == Constants.ENQUEUE_TAG_NAME) {
+        if(eventType.equals(Constants.ENQUEUE_TAG_NAME)) {
             eventTypeEnqueue = eventType;
         } else {
             eventTypeEnqueue = Constants.ENQUEUE_TAG_NAME + "_" + eventType;
@@ -181,7 +181,7 @@ public class LoggingQueueListener extends QueueListener {
         String eventTypeDequeue;
         String durationName;
         //Customize queue time for phases Vs on left at last
-        if(eventType == Constants.DEQUEUE_TAG_NAME) {
+        if(eventType.equals(Constants.DEQUEUE_TAG_NAME)) {
             eventTypeDequeue = eventType;
             durationName = "queue_time";
             //Calculate queue time for on left from getInQueueSince available in the queueItem
