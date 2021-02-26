@@ -26,6 +26,7 @@ Plugin implements some interfaces and marks the implementation to use annotation
 ```
     it will call fireOnDeleted to notify all ItemListeners
 
+
 ## Listeners list
 #### [SecurityListener](http://javadoc.jenkins-ci.org/jenkins/security/SecurityListener.html)
     record user login/logout and failedToLogIn events
@@ -33,14 +34,12 @@ Plugin implements some interfaces and marks the implementation to use annotation
     when user made changes to jenkins config (either plugin config or job config), record the config xml. disabled by default until user add jenkins_config.monitoring=true into metadata config
 #### [ItemListener](http://javadoc.jenkins-ci.org/hudson/model/listeners/RunListener.html)
 	similar to SaveableListener but for Job only, it has finer grained audit event. used to capture job created, renamed, copied and deleted
-
 #### [QueueListener](http://javadoc.jenkins-ci.org/hudson/model/queue/QueueListener.html)
-	listen for onEnterWaiting and onLeft and record the job queueTime and jenkins metrics
+	listen for onEnterWaiting, onLeaveWaiting, onEnterBlocked, onLeaveBlocked, onEnterBuildable, onLeavebBuildable, and onLeft. Record the job queueTime in each of the phase along with other jenkins metrics and reports to Splunk. 
 #### [RunListener](http://javadoc.jenkins-ci.org/hudson/model/listeners/RunListener.html)
 	listen for onStarted and onCompleted, and extract upstream job, build cause, scm, job result, and invoke DSL if defined
 #### [ComputerListener](http://javadoc.jenkins-ci.org/hudson/slaves/ComputerListener.html)
 	record slave online, offline, temporarilyOffline, and launchFailure
-
 ## [Notifier](http://javadoc.jenkins-ci.org/hudson/tasks/Notifier.html)
     Contribute to post build step, user can custom the logs to send to splunk in addition to what we have in Groovy DSL.
 
