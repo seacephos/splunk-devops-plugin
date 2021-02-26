@@ -36,6 +36,9 @@ public class LoggingQueueListener extends QueueListener {
             .maximumSize(3000).build();
     //To keep track of events timestamp for the queue phases like waiting, blocked and buildable
     private final static ConcurrentHashMap<Long, Long> queuePhase = new ConcurrentHashMap<Long, Long>();
+    // default is 3 question masks ???, see also hudson/model/Messages
+    // due to access policy hudson/model/Messages must not be used, hard code it here
+    private final String QUEUE_UNKNOWN_MSG = "???";
 
     @Override
     public void onEnterWaiting(Queue.WaitingItem wi) {
@@ -44,8 +47,12 @@ public class LoggingQueueListener extends QueueListener {
 
     @Override
     public void onLeaveWaiting(Queue.WaitingItem wi) {
+        String causeOfWaiting = wi.getWhy();
+        if (QUEUE_UNKNOWN_MSG.equals(causeOfWaiting)) {
+            causeOfWaiting="waiting probably caused by quiet period";
+        }
         sendToSplunkOnLeft(wi.task, wi.getId(),
-                Constants.WAITING_PHASE_NAME, wi.getWhy(), wi.getInQueueSince());
+                Constants.WAITING_PHASE_NAME, causeOfWaiting, wi.getInQueueSince());
     }
 
     @Override
@@ -55,8 +62,12 @@ public class LoggingQueueListener extends QueueListener {
 
     @Override
     public void onLeaveBlocked(Queue.BlockedItem bi) {
+        String causeOfBlocked = bi.getWhy();
+        if (QUEUE_UNKNOWN_MSG.equals(causeOfBlocked)) {
+            causeOfBlocked="waiting probably caused by QueueTaskDispatcher";
+        }
         sendToSplunkOnLeft(bi.task, bi.getId(),
-                Constants.BLOCKED_PHASE_NAME, bi.getWhy(), bi.getInQueueSince());
+                Constants.BLOCKED_PHASE_NAME, causeOfBlocked, bi.getInQueueSince());
     }
 
     @Override
@@ -67,8 +78,12 @@ public class LoggingQueueListener extends QueueListener {
 
     @Override
     public void onLeaveBuildable(Queue.BuildableItem bi) {
+        String causeOfWaiting = bi.getWhy();
+        if (QUEUE_UNKNOWN_MSG.equals(causeOfWaiting)) {
+            causeOfWaiting="waiting probably caused by lack of free executors";
+        }
         sendToSplunkOnLeft(bi.task, bi.getId(),
-                Constants.BUILDABLE_PHASE_NAME, bi.getWhy(), bi.getInQueueSince());
+                Constants.BUILDABLE_PHASE_NAME, causeOfWaiting, bi.getInQueueSince());
     }
 
     @Override
@@ -77,7 +92,7 @@ public class LoggingQueueListener extends QueueListener {
                 Constants.DEQUEUE_TAG_NAME, li.getWhy(), li.getInQueueSince());
         //Removing it from the map
         queuePhase.remove(li.getId());
-        //Storing i]t in the cache to access it later
+        //Storing it in the cache to access it later
         cache.put(li.getId(), queueTime);
 
     }
@@ -212,8 +227,8 @@ public class LoggingQueueListener extends QueueListener {
         return durationInPhase;
     }
 
-    private Float getQueueTime(Long id, Long inqueueSince) {
-        float queueTime = (System.currentTimeMillis() - inqueueSince) / 1000f;
+    private Float getQueueTime(Long id, Long inQueueSince) {
+        float queueTime = (System.currentTimeMillis() - inQueueSince) / 1000f;
         return queueTime;
     }
 
