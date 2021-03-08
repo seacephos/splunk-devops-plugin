@@ -1,3 +1,6 @@
+### 1.9.6 (March 8, 2021)
+- add more granular queue timing event for waiting, buildable, blocked events (e.g. type=dequeue_waiting OR type=dequeue_buildable OR type=dequeue_blocked ), thanks to [Reka Ajanthan](https://github.com/rekathiru)
+
 ### 1.9.5 (October 25, 2020) 
 - hudson.util.spring.ClosureScript → org.kohsuke.stapler.jelly.groovy.GroovyClosureScript, thanks to [Jesse Glick](https://github.com/jglick)
 - discard console log containing only whitespaces, thanks to [karjsim](https://github.com/karjsim)
