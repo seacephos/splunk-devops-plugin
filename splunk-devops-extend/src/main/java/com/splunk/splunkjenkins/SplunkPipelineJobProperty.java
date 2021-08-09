@@ -1,6 +1,5 @@
 package com.splunk.splunkjenkins;
 
-import com.google.common.base.Objects;
 import hudson.Extension;
 import jenkins.model.OptionalJobProperty;
 import org.jenkinsci.Symbol;
@@ -34,9 +33,7 @@ public class SplunkPipelineJobProperty extends OptionalJobProperty<WorkflowJob> 
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("enableDiagram", enableDiagram)
-                .toString();
+        return String.format("SplunkPipelineJobProperty{enableDiagram=%s}", enableDiagram);
     }
 
     @Extension
